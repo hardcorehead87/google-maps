@@ -85,7 +85,7 @@ namespace GoogleMapsApi.Entities.Directions.Response
 			}
 			catch (Exception ex)
 			{
-				throw new PointsDecodingException("Couldn't decode points", EncodedPoints, ex);
+                throw new Exception("Couldn't decode points", ex);
 			}
 
 			return points;

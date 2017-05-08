@@ -1,6 +1,4 @@
 using System;
-using System.Net;
-using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using GoogleMapsApi.Engine;
@@ -20,43 +18,7 @@ namespace GoogleMapsApi
         internal static readonly EngineFacade<TRequest, TResponse> Instance = new EngineFacade<TRequest, TResponse>();
 
         private EngineFacade() { }
-
-        /// <summary>
-        /// Determines the maximum number of concurrent HTTP connections to open to this engine's host address. The default value is 2 connections.
-        /// </summary>
-        /// <remarks>
-        /// This value is determined by the ServicePointManager and is shared across other engines that use the same host address.
-        /// </remarks>
-        public int HttpConnectionLimit
-        {
-            get
-            {
-                return MapsAPIGenericEngine<TRequest, TResponse>.HttpConnectionLimit;
-            }
-            set
-            {
-                MapsAPIGenericEngine<TRequest, TResponse>.HttpConnectionLimit = value;
-            }
-        }
-		
-        /// <summary>
-        /// Determines the maximum number of concurrent HTTPS connections to open to this engine's host address. The default value is 2 connections.
-        /// </summary>
-        /// <remarks>
-        /// This value is determined by the ServicePointManager and is shared across other engines that use the same host address.
-        /// </remarks>
-        public int HttpsConnectionLimit
-        {
-            get
-            {
-                return MapsAPIGenericEngine<TRequest, TResponse>.HttpsConnectionLimit;
-            }
-            set
-            {
-                MapsAPIGenericEngine<TRequest, TResponse>.HttpsConnectionLimit = value;
-            }
-        }
-
+        
         /// <summary>
         /// Occurs when the Url created. Can be used for override the Url.
         /// </summary>

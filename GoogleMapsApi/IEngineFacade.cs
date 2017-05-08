@@ -12,22 +12,6 @@ namespace GoogleMapsApi
         where TResponse : IResponseFor<TRequest>
     {
         /// <summary>
-        /// Determines the maximum number of concurrent HTTP connections to open to this engine's host address. The default value is 2 connections.
-        /// </summary>
-        /// <remarks>
-        /// This value is determined by the ServicePointManager and is shared across other engines that use the same host address.
-        /// </remarks>
-        int HttpConnectionLimit { get; set; }
-
-        /// <summary>
-        /// Determines the maximum number of concurrent HTTPS connections to open to this engine's host address. The default value is 2 connections.
-        /// </summary>
-        /// <remarks>
-        /// This value is determined by the ServicePointManager and is shared across other engines that use the same host address.
-        /// </remarks>
-        int HttpsConnectionLimit { get; set; }
-
-        /// <summary>
         /// Occurs when the Url created. Can be used for override the Url.
         /// </summary>
         event UriCreatedDelegate OnUriCreated;

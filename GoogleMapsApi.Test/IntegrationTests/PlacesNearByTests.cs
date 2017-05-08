@@ -94,7 +94,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
             //make sure the second page has some results
             Assert.IsTrue(result.Results != null && result.Results.Count() > 0);
             //make sure the result from the first page isn't on the second page to confirm we actually got a second page with new results
-            Assert.IsFalse(result.Results.Any(t => t.Reference == resultFromFirstPage.Reference));
+            Assert.IsFalse(result.Results.Any(t => t.PlaceId == resultFromFirstPage.PlaceId));
         }
     }
 }
