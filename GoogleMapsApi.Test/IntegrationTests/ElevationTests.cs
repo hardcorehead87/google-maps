@@ -1,14 +1,13 @@
 ﻿using System.Linq;
 using GoogleMapsApi.Entities.Common;
 using GoogleMapsApi.Entities.Elevation.Request;
-using NUnit.Framework;
+using Xunit;
 
 namespace GoogleMapsApi.Test.IntegrationTests
 {
-    [TestFixture]
-    public class ElevationTests : BaseTestIntegration
+    public class ElevationTests
     {
-        [Test]
+        [Fact]
         public void Elevation_ReturnsCorrectElevation()
         {
             var request = new ElevationRequest { Locations = new[] { new Location(40.7141289, -73.9614074) } };
@@ -16,12 +15,12 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var result = GoogleMaps.Elevation.Query(request);
 
             if (result.Status == Entities.Elevation.Response.Status.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(Entities.Elevation.Response.Status.OK, result.Status);
-            Assert.AreEqual(14.78, result.Results.First().Elevation, 1.0);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(Entities.Elevation.Response.Status.OK, result.Status);
+            Assert.Equal(14.78, result.Results.First().Elevation);
         }
 
-        [Test]
+        [Fact]
         public void ElevationAsync_ReturnsCorrectElevation()
         {
             var request = new ElevationRequest { Locations = new[] { new Location(40.7141289, -73.9614074) } };
@@ -29,9 +28,9 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var result = GoogleMaps.Elevation.QueryAsync(request).Result;
 
             if (result.Status == Entities.Elevation.Response.Status.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(Entities.Elevation.Response.Status.OK, result.Status);
-            Assert.AreEqual(14.78, result.Results.First().Elevation, 1.0);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(Entities.Elevation.Response.Status.OK, result.Status);
+            Assert.Equal(14.78, result.Results.First().Elevation);
         } 
     }
 }

@@ -3,17 +3,16 @@ using GoogleMapsApi.Entities.Common;
 using GoogleMapsApi.StaticMaps;
 using GoogleMapsApi.StaticMaps.Entities;
 using GoogleMapsApi.StaticMaps.Enums;
-using NUnit.Framework;
+using Xunit;
 
 namespace GoogleMapsApi.Test
 {
 	/// <summary>
 	/// Tests examples from - http://code.google.com/apis/maps/documentation/staticmaps/
 	/// </summary>
-	[TestFixture]
 	public class StaticMaps
 	{
-		[Test(Description = "First basic example")]
+		[Fact]
 		public void BasicTest()
 		{
 			// downtown New York City
@@ -49,11 +48,11 @@ namespace GoogleMapsApi.Test
 
 			string generateStaticMapURL = new StaticMapsEngine().GenerateStaticMapURL(request);
 
-			Assert.AreEqual(expectedResult, generateStaticMapURL);
+			Assert.Equal(expectedResult, generateStaticMapURL);
 		}
 
-		[Test]
-		public void AddressTest()
+	    [Fact]
+        public void AddressTest()
 		{
 			var request = new StaticMapRequest(new AddressLocation("Berkeley,CA"), 14, new ImageSize(400, 400));
 			string expectedResult = "http://maps.google.com/maps/api/staticmap" +
@@ -61,11 +60,11 @@ namespace GoogleMapsApi.Test
 
 			string generateStaticMapURL = new StaticMapsEngine().GenerateStaticMapURL(request);
 
-			Assert.AreEqual(expectedResult, generateStaticMapURL);
+			Assert.Equal(expectedResult, generateStaticMapURL);
 		}
 
-		[Test]
-		public void ZoomLevels()
+	    [Fact]
+        public void ZoomLevels()
 		{
 			var request = new StaticMapRequest(new Location(40.714728, -73.998672), 12, new ImageSize(400, 400));
 			string expectedResult = "http://maps.google.com/maps/api/staticmap" +
@@ -73,11 +72,11 @@ namespace GoogleMapsApi.Test
 
 			string generateStaticMapURL = new StaticMapsEngine().GenerateStaticMapURL(request);
 
-			Assert.AreEqual(expectedResult, generateStaticMapURL);
+			Assert.Equal(expectedResult, generateStaticMapURL);
 		}
 
-		[Test]
-		public void ImageSize()
+	    [Fact]
+        public void ImageSize()
 		{
 			var request = new StaticMapRequest(new Location(0, 0), 1, new ImageSize(400, 50));
 			string expectedResult = "http://maps.google.com/maps/api/staticmap" +
@@ -85,12 +84,11 @@ namespace GoogleMapsApi.Test
 
 			string generateStaticMapURL = new StaticMapsEngine().GenerateStaticMapURL(request);
 
-			Assert.AreEqual(expectedResult, generateStaticMapURL);
+			Assert.Equal(expectedResult, generateStaticMapURL);
 		}
-
-
-		[Test]
-		public void MapTypes()
+        
+	    [Fact]
+        public void MapTypes()
 		{
 			var request = new StaticMapRequest(new Location(40.714728, -73.998672), 12, new ImageSize(400, 400));
 			request.MapType = MapType.Terrain;
@@ -99,7 +97,7 @@ namespace GoogleMapsApi.Test
 
 			string actualResult = new StaticMapsEngine().GenerateStaticMapURL(request);
 
-			Assert.AreEqual(expectedResult, actualResult);
+			Assert.Equal(expectedResult, actualResult);
 		}
 	}
 }

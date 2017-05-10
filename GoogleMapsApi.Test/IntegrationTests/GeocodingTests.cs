@@ -1,38 +1,47 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Authentication;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using GoogleMapsApi.Entities.Common;
 using GoogleMapsApi.Entities.Geocoding.Request;
-using NUnit.Framework;
+using GoogleMapsApi.Test.Fixtures;
+using Xunit;
 using Status = GoogleMapsApi.Entities.Geocoding.Response.Status;
 
 namespace GoogleMapsApi.Test.IntegrationTests
 {
-    [TestFixture]
-    public class GeocodingTests : BaseTestIntegration
+    [Collection("IntegrationTest")]
+    public class GeocodingTests
     {
-        [Test]
+        private readonly IntegrationTestFixture _fixture;
+
+        public GeocodingTests(IntegrationTestFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
+        [Fact]
         public void Geocoding_ReturnsCorrectLocation()
         {
             var request = new GeocodingRequest
             {
-                ApiKey = ApiKey,
+                ApiKey = _fixture.ApiKey,
                 Address = "285 Bedford Ave, Brooklyn, NY 11211, USA"
             };
 
             var result = GoogleMaps.Geocode.Query(request);
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(Status.OK, result.Status);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(Status.OK, result.Status);
             // 40.{*}, -73.{*}
-            StringAssert.IsMatch("40\\.\\d*,-73\\.\\d*", result.Results.First().Geometry.Location.LocationString);
+            Assert.True(Regex.IsMatch(result.Results.First().Geometry.Location.LocationString, "40\\.\\d*,-73\\.\\d*"));
         }
 
 
-        [Test]
+        [Fact]
         public void GeocodingAsync_ReturnsCorrectLocation()
         {
             var request = new GeocodingRequest { Address = "285 Bedford Ave, Brooklyn, NY 11211, USA" };
@@ -40,13 +49,13 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var result = GoogleMaps.Geocode.QueryAsync(request).Result;
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(Status.OK, result.Status);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(Status.OK, result.Status);
             // 40.{*}, -73.{*}
-            StringAssert.IsMatch("40\\.\\d*,-73\\.\\d*", result.Results.First().Geometry.Location.LocationString);
+            Assert.True(Regex.IsMatch(result.Results.First().Geometry.Location.LocationString, "40\\.\\d*,-73\\.\\d*"));
         }
 
-        [Test]
+        [Fact]
         public void Geocoding_InvalidClientCredentials_Throws()
         {
             var request = new GeocodingRequest { Address = "285 Bedford Ave, Brooklyn, NY 11211, USA", ClientID = "gme-ThisIsAUnitTest", SigningKey = "AAECAwQFBgcICQoLDA0ODxAREhM=" };
@@ -54,16 +63,16 @@ namespace GoogleMapsApi.Test.IntegrationTests
             Assert.Throws<AuthenticationException>(() => GoogleMaps.Geocode.Query(request));
         }
 
-        [Test]
+        [Fact]
         public void GeocodingAsync_InvalidClientCredentials_Throws()
         {
             var request = new GeocodingRequest { Address = "285 Bedford Ave, Brooklyn, NY 11211, USA", ClientID = "gme-ThisIsAUnitTest", SigningKey = "AAECAwQFBgcICQoLDA0ODxAREhM=" };
-
-            Assert.Throws(Is.TypeOf<AggregateException>().And.InnerException.TypeOf<AuthenticationException>(),
-                          () => GoogleMaps.Geocode.QueryAsync(request).Wait());
+            
+            var exeption = Assert.Throws<AggregateException>(() => GoogleMaps.Geocode.QueryAsync(request).Wait());
+            Assert.IsType<AuthenticationException>(exeption.InnerException);
         }
 
-        [Test]
+        [Fact]
         public void GeocodingAsync_Cancel_Throws()
         {
             var request = new GeocodingRequest { Address = "285 Bedford Ave, Brooklyn, NY 11211, USA" };
@@ -71,12 +80,12 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var tokeSource = new CancellationTokenSource();
             var task = GoogleMaps.Geocode.QueryAsync(request, tokeSource.Token);
             tokeSource.Cancel();
-
-            Assert.Throws(Is.TypeOf<AggregateException>().And.InnerException.TypeOf<TaskCanceledException>(),
-                () => task.Wait());
+            
+            var exeption = Assert.Throws<AggregateException>(() => task.Wait());
+            Assert.IsType<TaskCanceledException>(exeption.InnerException);
         }
 
-        [Test]
+        [Fact]
         public void GeocodingAsync_WithPreCanceledToken_Cancels()
         {
             var request = new GeocodingRequest { Address = "285 Bedford Ave, Brooklyn, NY 11211, USA" };
@@ -85,11 +94,11 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             var task = GoogleMaps.Geocode.QueryAsync(request, cts.Token);
 
-            Assert.Throws(Is.TypeOf<AggregateException>().And.InnerException.TypeOf<TaskCanceledException>(),
-                            () => task.Wait());
+            var exeption = Assert.Throws<AggregateException>(() => task.Wait());
+            Assert.IsType<TaskCanceledException>(exeption.InnerException);
         }
 
-        [Test]
+        [Fact]
         public void ReverseGeocoding_ReturnsCorrectAddress()
         {
             var request = new GeocodingRequest { Location = new Location(40.7141289, -73.9614074) };
@@ -97,12 +106,12 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var result = GoogleMaps.Geocode.Query(request);
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(Status.OK, result.Status);
-            StringAssert.Contains("Bedford Ave, Brooklyn, NY 11211, USA", result.Results.First().FormattedAddress);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(Status.OK, result.Status);
+            Assert.Contains("Bedford Ave, Brooklyn, NY 11211, USA", result.Results.First().FormattedAddress);
         }
 
-        [Test]
+        [Fact]
         public void ReverseGeocodingAsync_ReturnsCorrectAddress()
         {
             var request = new GeocodingRequest { Location = new Location(40.7141289, -73.9614074) };
@@ -110,12 +119,9 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var result = GoogleMaps.Geocode.QueryAsync(request).Result;
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(Status.OK, result.Status);
-            StringAssert.Contains("Bedford Ave, Brooklyn, NY 11211, USA", result.Results.First().FormattedAddress);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(Status.OK, result.Status);
+            Assert.Contains("Bedford Ave, Brooklyn, NY 11211, USA", result.Results.First().FormattedAddress);
         }
-
-
-
     }
 }

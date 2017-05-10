@@ -4,15 +4,22 @@ using System.Linq;
 using GoogleMapsApi.Entities.Common;
 using GoogleMapsApi.Entities.Directions.Request;
 using GoogleMapsApi.Entities.Directions.Response;
-using NUnit.Framework;
+using GoogleMapsApi.Test.Fixtures;
+using Xunit;
 
 namespace GoogleMapsApi.Test.IntegrationTests
 {
-    [TestFixture]
-    public class DirectionsTests : BaseTestIntegration
+    [Collection("IntegrationTest")]
+    public class DirectionsTests
     {
+        private readonly IntegrationTestFixture _fixture;
 
-        [Test]
+        public DirectionsTests(IntegrationTestFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
+        [Fact]
         public void Directions_SumOfStepDistancesCorrect()
         {
             var request = new DirectionsRequest { Origin = "285 Bedford Ave, Brooklyn, NY, USA", Destination = "185 Broadway Ave, Manhattan, NY, USA" };
@@ -20,12 +27,12 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var result = GoogleMaps.Directions.Query(request);
 
             if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(DirectionsStatusCodes.OK, result.Status);
-            Assert.Greater(result.Routes.First().Legs.First().Steps.Sum(s => s.Distance.Value), 100);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(DirectionsStatusCodes.OK, result.Status);
+            Assert.True(result.Routes.First().Legs.First().Steps.Sum(s => s.Distance.Value) > 100);
         }
 
-		[Test]
+		[Fact]
 		public void Directions_ErrorMessage()
 		{
 			var request = new DirectionsRequest
@@ -36,13 +43,13 @@ namespace GoogleMapsApi.Test.IntegrationTests
 			};
 			var result = GoogleMaps.Directions.Query(request);
 			if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
-				Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-			Assert.AreEqual(DirectionsStatusCodes.REQUEST_DENIED, result.Status);
-			Assert.IsNotNull (result.ErrorMessage);
-			Assert.IsNotEmpty (result.ErrorMessage);
+				Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+			Assert.Equal(DirectionsStatusCodes.REQUEST_DENIED, result.Status);
+		    Assert.NotNull(result.ErrorMessage);
+		    Assert.NotEmpty(result.ErrorMessage);
 		}
 
-        [Test]
+        [Fact]
         public void Directions_WithWayPoints()
         {
             var request = new DirectionsRequest { Origin = "NYC, USA", Destination = "Miami, USA", Waypoints = new string[] { "Philadelphia, USA" }, OptimizeWaypoints = true };
@@ -50,14 +57,14 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var result = GoogleMaps.Directions.Query(request);
 
             if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(DirectionsStatusCodes.OK, result.Status);
-            Assert.AreEqual(156097, result.Routes.First().Legs.First().Steps.Sum(s => s.Distance.Value), 10 * 1000);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(DirectionsStatusCodes.OK, result.Status);
+            Assert.Equal(156097, result.Routes.First().Legs.First().Steps.Sum(s => s.Distance.Value));
 
-            StringAssert.Contains("Philadelphia", result.Routes.First().Legs.First().EndAddress);
+            Assert.Contains("Philadelphia", result.Routes.First().Legs.First().EndAddress);
         }
 
-        [Test]
+        [Fact]
         public void Directions_Correct_OverviewPath()
         {
             DirectionsRequest request = new DirectionsRequest();
@@ -72,12 +79,12 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             IEnumerable<Location> points = result.Routes.First().OverviewPath.Points;
 
-            Assert.AreEqual(DirectionsStatusCodes.OK, result.Status);
-            Assert.AreEqual(122, overviewPath.Points.Count(), 30);
-            Assert.Greater(polyline.Points.Count(), 1);
+            Assert.Equal(DirectionsStatusCodes.OK, result.Status);
+            Assert.Equal(122, overviewPath.Points.Count());
+            Assert.True(polyline.Points.Count() > 1);
         }
 
-        [Test]
+        [Fact]
         public void DirectionsAsync_SumOfStepDistancesCorrect()
         {
             var request = new DirectionsRequest { Origin = "285 Bedford Ave, Brooklyn, NY, USA", Destination = "185 Broadway Ave, Manhattan, NY, USA" };
@@ -85,14 +92,13 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
-            Assert.AreEqual(DirectionsStatusCodes.OK, result.Status);
-            Assert.Greater(result.Routes.First().Legs.First().Steps.Sum(s => s.Distance.Value), 100);
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+            Assert.Equal(DirectionsStatusCodes.OK, result.Status);
+            Assert.True(result.Routes.First().Legs.First().Steps.Sum(s => s.Distance.Value) > 100);
         }
-
-
+        
         //The sub_steps differes between google docs documentation and implementation. We use it as google implemented, so we have test to make sure it's not broken.
-        [Test]
+        [Fact]
         public void Directions_VerifysubSteps()
         {
             var request = new DirectionsRequest
@@ -111,7 +117,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
             Assert.NotNull(step);
         }
 
-        [Test]
+        [Fact]
         public void Directions_VerifyBounds()
         {
             var request = new DirectionsRequest
@@ -127,15 +133,15 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             Assert.NotNull(route);
             Assert.NotNull(route.Bounds);
-            Assert.Greater(route.Bounds.NorthEast.Latitude, 50);
-            Assert.Greater(route.Bounds.NorthEast.Longitude, 3);
-            Assert.Greater(route.Bounds.SouthWest.Latitude, 50);
-            Assert.Greater(route.Bounds.SouthWest.Longitude, 3);
-            Assert.Greater(route.Bounds.Center.Latitude, 50);
-            Assert.Greater(route.Bounds.Center.Longitude, 3);
+            Assert.True(route.Bounds.NorthEast.Latitude > 50);
+            Assert.True(route.Bounds.NorthEast.Longitude > 3);
+            Assert.True(route.Bounds.SouthWest.Latitude > 50);
+            Assert.True(route.Bounds.SouthWest.Longitude > 3);
+            Assert.True(route.Bounds.Center.Latitude > 50);
+            Assert.True(route.Bounds.Center.Longitude > 3);
         }
 
-        [Test]
+        [Fact]
         public void Directions_WithLocalIcons()
         {
             var dep_time = DateTime.Today
@@ -158,14 +164,14 @@ namespace GoogleMapsApi.Test.IntegrationTests
             var leg = route.Legs.First();
             var steps = leg.Steps;
 
-            Assert.IsNotEmpty(steps.Where(s =>
+            Assert.NotEmpty(steps.Where(s =>
                 s.TransitDetails?
                 .Lines?
                 .Vehicle?
                 .LocalIcon != null));
         }
 
-        [Test]
+        [Fact]
         public void Directions_WithRegionSearch()
         {
             var dep_time = DateTime.Today
@@ -183,11 +189,11 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             DirectionsResponse result = GoogleMaps.Directions.Query(request);
 
-            Assert.IsNotEmpty(result.Routes);
+            Assert.NotEmpty(result.Routes);
             Assert.True(result.Status.Equals(DirectionsStatusCodes.OK));
         }
 
-        [Test]
+        [Fact]
         public void Directions_CanGetDurationWithTraffic()
         {
             var request = new DirectionsRequest
@@ -195,18 +201,18 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 Origin = "285 Bedford Ave, Brooklyn, NY, USA",
                 Destination = "185 Broadway Ave, Manhattan, NY, USA",
                 DepartureTime = DateTime.Now.Date.AddDays(1).AddHours(8),
-                ApiKey = ApiKey //Duration in traffic requires an API key
+                ApiKey = _fixture.ApiKey //Duration in traffic requires an API key
             };
             var result = GoogleMaps.Directions.Query(request);
 
             if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
-                Assert.Inconclusive("Cannot run test since you have exceeded your Google API query limit.");
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
 
             //All legs have duration
-            Assert.IsTrue(result.Routes.First().Legs.All(l => l.DurationInTraffic != null));
+            Assert.True(result.Routes.First().Legs.All(l => l.DurationInTraffic != null));
 
             //Duration with traffic is usually longer but is not guaranteed
-            Assert.AreNotEqual(result.Routes.First().Legs.Sum(s => s.Duration.Value.TotalSeconds), result.Routes.First().Legs.Sum(s => s.DurationInTraffic.Value.TotalSeconds));
+            Assert.NotEqual(result.Routes.First().Legs.Sum(s => s.Duration.Value.TotalSeconds), result.Routes.First().Legs.Sum(s => s.DurationInTraffic.Value.TotalSeconds));
         }
     }
 }
