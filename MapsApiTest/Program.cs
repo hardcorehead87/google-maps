@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using GoogleMapsApi;
-using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.Entities.Directions.Request;
-using GoogleMapsApi.Entities.Directions.Response;
-using GoogleMapsApi.Entities.Elevation.Request;
-using GoogleMapsApi.Entities.Geocoding.Request;
-using GoogleMapsApi.Entities.Geocoding.Response;
-using GoogleMapsApi.StaticMaps;
-using GoogleMapsApi.StaticMaps.Entities;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.Directions.Request;
+using GoogleMapsApi.Core.Entities.Directions.Response;
+using GoogleMapsApi.Core.Entities.Elevation.Request;
+using GoogleMapsApi.Core.Entities.Geocoding.Request;
+using GoogleMapsApi.Core.Entities.Geocoding.Response;
+using GoogleMapsApi.Core.StaticMaps;
+using GoogleMapsApi.Core.StaticMaps.Entities;
 
 namespace MapsApiTest
 {

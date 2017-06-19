@@ -1,9 +1,12 @@
 ﻿using System.Linq;
-using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.Entities.PlacesDetails.Request;
-using GoogleMapsApi.Entities.PlacesDetails.Response;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.Places.Request;
+using GoogleMapsApi.Core.Entities.PlacesDetails.Request;
+using GoogleMapsApi.Core.Entities.PlacesDetails.Response;
 using GoogleMapsApi.Test.Fixtures;
 using Xunit;
+using Status = GoogleMapsApi.Core.Entities.Places.Response.Status;
 
 namespace GoogleMapsApi.Test.IntegrationTests
 {
@@ -22,15 +25,15 @@ namespace GoogleMapsApi.Test.IntegrationTests
         {
             if (_cachedMyPlaceId == null)
             {
-                var request = new Entities.Places.Request.PlacesRequest()
+                var request = new PlacesRequest()
                 {
                     ApiKey = _fixture.ApiKey,
                     Name = "My Place Bar & Restaurant",
                     Location = new Location(-31.954453, 115.862717),
-                    RankBy = Entities.Places.Request.RankBy.Distance,
+                    RankBy = RankBy.Distance,
                 };
                 var result = GoogleMaps.Places.Query(request);
-                if (result.Status == Entities.Places.Response.Status.OVER_QUERY_LIMIT)
+                if (result.Status == Status.OVER_QUERY_LIMIT)
                     Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
                 _cachedMyPlaceId = result.Results.First().PlaceId;
             }
@@ -48,9 +51,9 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             PlacesDetailsResponse result = GoogleMaps.PlacesDetails.Query(request);
 
-            if (result.Status == Status.OVER_QUERY_LIMIT)
+            if (result.Status == Core.Entities.PlacesDetails.Response.Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
-            Assert.Equal(Status.OK, result.Status);
+            Assert.Equal(Core.Entities.PlacesDetails.Response.Status.OK, result.Status);
             Assert.NotEmpty(result.Result.Photos);
         }
 
@@ -66,9 +69,9 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             PlacesDetailsResponse result = GoogleMaps.PlacesDetails.Query(request);
 
-            if (result.Status == Status.OVER_QUERY_LIMIT)
+            if (result.Status == Core.Entities.PlacesDetails.Response.Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
-            Assert.Equal(Status.NOT_FOUND, result.Status);
+            Assert.Equal(Core.Entities.PlacesDetails.Response.Status.NOT_FOUND, result.Status);
         }
 
         readonly PriceLevel[] _anyPriceLevel = { PriceLevel.Free, PriceLevel.Inexpensive, PriceLevel.Moderate, PriceLevel.Expensive, PriceLevel.VeryExpensive };
@@ -84,9 +87,9 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             PlacesDetailsResponse result = GoogleMaps.PlacesDetails.Query(request);
 
-            if (result.Status == Status.OVER_QUERY_LIMIT)
+            if (result.Status == Core.Entities.PlacesDetails.Response.Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
-            Assert.Equal(Status.OK, result.Status);
+            Assert.Equal(Core.Entities.PlacesDetails.Response.Status.OK, result.Status);
             Assert.Contains(result.Result.PriceLevel.Value, _anyPriceLevel);
         }
 
@@ -101,9 +104,9 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             PlacesDetailsResponse result = GoogleMaps.PlacesDetails.Query(request);
 
-            if (result.Status == Status.OVER_QUERY_LIMIT)
+            if (result.Status == Core.Entities.PlacesDetails.Response.Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
-            Assert.Equal(Status.OK, result.Status);
+            Assert.Equal(Core.Entities.PlacesDetails.Response.Status.OK, result.Status);
             
             // commented out because seems like google doesn't have opening hours for this place anymore
             /*

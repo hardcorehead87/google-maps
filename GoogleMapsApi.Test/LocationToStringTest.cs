@@ -1,4 +1,4 @@
-using GoogleMapsApi.Entities.Common;
+using GoogleMapsApi.Core.Entities.Common;
 using Xunit;
 
 namespace GoogleMapsApi.Test

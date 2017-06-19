@@ -1,8 +1,9 @@
-﻿using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.Entities.PlacesRadar.Request;
-using GoogleMapsApi.Entities.PlacesRadar.Response;
-using Xunit;
+﻿using Xunit;
 using System.Linq;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.PlacesRadar.Request;
+using GoogleMapsApi.Core.Entities.PlacesRadar.Response;
 using GoogleMapsApi.Test.Fixtures;
 
 namespace GoogleMapsApi.Test.IntegrationTests

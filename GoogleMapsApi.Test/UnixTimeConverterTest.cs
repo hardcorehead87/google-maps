@@ -1,5 +1,5 @@
 ﻿using System;
-using GoogleMapsApi.Engine;
+using GoogleMapsApi.Core.Engine;
 using Xunit;
 
 namespace GoogleMapsApi.Test

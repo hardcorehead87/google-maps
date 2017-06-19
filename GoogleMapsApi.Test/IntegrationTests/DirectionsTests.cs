@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.Entities.Directions.Request;
-using GoogleMapsApi.Entities.Directions.Response;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.Directions.Request;
+using GoogleMapsApi.Core.Entities.Directions.Response;
 using GoogleMapsApi.Test.Fixtures;
 using Xunit;
 
@@ -213,6 +214,40 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             //Duration with traffic is usually longer but is not guaranteed
             Assert.NotEqual(result.Routes.First().Legs.Sum(s => s.Duration.Value.TotalSeconds), result.Routes.First().Legs.Sum(s => s.DurationInTraffic.Value.TotalSeconds));
+        }
+
+        [Fact]
+        public void Directions_CanGetDurationWithTrafficModel()
+        {
+            var departureTime = DateTime.Today.AddHours(8);
+            var dayOfWeek = departureTime.DayOfWeek;
+            departureTime = departureTime.AddYears(1);
+            while (departureTime.DayOfWeek != dayOfWeek)
+                departureTime = departureTime.AddDays(-1);
+
+            var request = new DirectionsRequest
+            {
+                Origin = "285 Bedford Ave, Brooklyn, NY, USA",
+                Destination = "185 Broadway Ave, Manhattan, NY, USA",
+                DepartureTime = departureTime,
+                TrafficModel = TrafficModel.Pessimistic,
+                ApiKey = _fixture.ApiKey //Traffic model requires an API key
+            };
+            var resultPessimistic = GoogleMaps.Directions.Query(request);
+            request.TrafficModel = TrafficModel.Optimistic;
+            var resultOptimistic = GoogleMaps.Directions.Query(request);
+            request.TrafficModel = TrafficModel.Best_guess;
+            var resultBest_guess = GoogleMaps.Directions.Query(request);
+
+            if (resultPessimistic.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
+                Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
+
+            //All legs have duration
+            Assert.True(resultPessimistic.Routes.First().Legs.All(l => l.DurationInTraffic != null));
+            
+            // Duration Optimistic < Best_guess < Pessimistic
+            Assert.True(resultOptimistic.Routes.First().Legs.Sum(s => s.DurationInTraffic.Value.TotalSeconds) < resultBest_guess.Routes.First().Legs.Sum(s => s.DurationInTraffic.Value.TotalSeconds));
+            Assert.True(resultBest_guess.Routes.First().Legs.Sum(s => s.DurationInTraffic.Value.TotalSeconds) < resultPessimistic.Routes.First().Legs.Sum(s => s.DurationInTraffic.Value.TotalSeconds));
         }
     }
 }

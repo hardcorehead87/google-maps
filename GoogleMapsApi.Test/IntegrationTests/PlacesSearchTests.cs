@@ -1,10 +1,11 @@
-﻿using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.Entities.Places.Request;
-using GoogleMapsApi.Entities.Places.Response;
-using Xunit;
+﻿using Xunit;
 using System;
 using System.Linq;
 using System.Threading;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.Places.Request;
+using GoogleMapsApi.Core.Entities.Places.Response;
 using GoogleMapsApi.Test.Fixtures;
 
 namespace GoogleMapsApi.Test.IntegrationTests

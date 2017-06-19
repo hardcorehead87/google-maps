@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GoogleMapsApi\GoogleMapsApi.csproj" />
+    <ProjectReference Include="..\GoogleMapsApi.Core\GoogleMapsApi.Core.csproj" />
   </ItemGroup>
 
 </Project>

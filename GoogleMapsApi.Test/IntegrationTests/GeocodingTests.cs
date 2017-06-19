@@ -4,11 +4,12 @@ using System.Security.Authentication;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.Entities.Geocoding.Request;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.Geocoding.Request;
 using GoogleMapsApi.Test.Fixtures;
 using Xunit;
-using Status = GoogleMapsApi.Entities.Geocoding.Response.Status;
+using Status = GoogleMapsApi.Core.Entities.Geocoding.Response.Status;
 
 namespace GoogleMapsApi.Test.IntegrationTests
 {

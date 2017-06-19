@@ -1,8 +1,10 @@
-﻿using GoogleMapsApi.Entities.PlaceAutocomplete.Request;
-using GoogleMapsApi.Entities.PlaceAutocomplete.Response;
-using Xunit;
+﻿using Xunit;
 using System.Collections.Generic;
 using System.Linq;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.PlaceAutocomplete.Request;
+using GoogleMapsApi.Core.Entities.PlaceAutocomplete.Response;
 using GoogleMapsApi.Test.Fixtures;
 
 namespace GoogleMapsApi.Test.IntegrationTests
@@ -24,7 +26,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
             {
                 ApiKey = _fixture.ApiKey,
                 Input = "zxqtrb",
-                Location = new Entities.Common.Location(53.4635332, -2.2419169),
+                Location = new Location(53.4635332, -2.2419169),
                 Radius = 30000
             };
 
@@ -42,7 +44,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
             {
                 ApiKey = _fixture.ApiKey,
                 Input = "abbeyjibberish",
-                Location = new Entities.Common.Location(53.4635332, -2.2419169),
+                Location = new Location(53.4635332, -2.2419169),
                 Radius = 30000
             };
 
@@ -57,7 +59,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 ApiKey = _fixture.ApiKey,
                 Input = "abbeyjibberish",
                 Offset = 5,
-                Location = new Entities.Common.Location(53.4635332, -2.2419169)
+                Location = new Location(53.4635332, -2.2419169)
             };
 
             PlaceAutocompleteResponse offsetResult = GoogleMaps.PlaceAutocomplete.Query(offsetRequest);
@@ -75,7 +77,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 ApiKey = _fixture.ApiKey,
                 Input = "abb",
                 Type = "geocode",
-                Location = new Entities.Common.Location(53.4635332, -2.2419169),
+                Location = new Location(53.4635332, -2.2419169),
                 Radius = 30000
             };
 
@@ -100,7 +102,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
             {
                 ApiKey = _fixture.ApiKey,
                 Input = "oakfield road, chea",
-                Location = new Entities.Common.Location(53.4635332, -2.2419169),
+                Location = new Location(53.4635332, -2.2419169),
                 Radius = 30000
             };
 
@@ -120,7 +122,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
             {
                 ApiKey = _fixture.ApiKey,
                 Input = "128 abbey r",
-                Location = new Entities.Common.Location(53.4635332, -2.2419169),
+                Location = new Location(53.4635332, -2.2419169),
                 Radius = 30000
             };
 
@@ -172,7 +174,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
             {
                 ApiKey = _fixture.ApiKey,
                 Input = query,
-                Location = new Entities.Common.Location(0, 0),
+                Location = new Location(0, 0),
                 Radius = radius
             };
         }

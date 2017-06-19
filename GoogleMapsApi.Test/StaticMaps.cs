@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.StaticMaps;
-using GoogleMapsApi.StaticMaps.Entities;
-using GoogleMapsApi.StaticMaps.Enums;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.StaticMaps;
+using GoogleMapsApi.Core.StaticMaps.Entities;
+using GoogleMapsApi.Core.StaticMaps.Enums;
 using Xunit;
 
 namespace GoogleMapsApi.Test

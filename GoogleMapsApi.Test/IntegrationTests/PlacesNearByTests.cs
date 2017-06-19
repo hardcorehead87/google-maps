@@ -1,10 +1,11 @@
-﻿using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.Entities.PlacesNearBy.Request;
-using GoogleMapsApi.Entities.PlacesNearBy.Response;
-using Xunit;
+﻿using Xunit;
 using System;
 using System.Linq;
 using System.Threading;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.PlacesNearBy.Request;
+using GoogleMapsApi.Core.Entities.PlacesNearBy.Response;
 using GoogleMapsApi.Test.Fixtures;
 
 namespace GoogleMapsApi.Test.IntegrationTests

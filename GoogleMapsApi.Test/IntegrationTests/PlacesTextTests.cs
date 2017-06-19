@@ -1,6 +1,7 @@
 ﻿using System.Linq;
-using GoogleMapsApi.Entities.PlacesText.Request;
-using GoogleMapsApi.Entities.PlacesText.Response;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.PlacesText.Request;
+using GoogleMapsApi.Core.Entities.PlacesText.Response;
 using GoogleMapsApi.Test.Fixtures;
 using Xunit;
 

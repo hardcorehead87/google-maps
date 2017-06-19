@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
-using GoogleMapsApi.Engine;
-using GoogleMapsApi.Entities.Directions.Response;
-using GoogleMapsApi.Entities.DistanceMatrix.Request;
+using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Engine;
+using GoogleMapsApi.Core.Entities.Directions.Response;
+using GoogleMapsApi.Core.Entities.DistanceMatrix.Request;
 using GoogleMapsApi.Test.Fixtures;
 using Xunit;
 

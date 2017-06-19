@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMapsApi", "GoogleMapsApi\GoogleMapsApi.csproj", "{2365CD10-AD61-4822-BFE6-3D94D52CFBCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMapsApi.Core", "GoogleMapsApi.Core\GoogleMapsApi.Core.csproj", "{2365CD10-AD61-4822-BFE6-3D94D52CFBCE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapsApiTest", "MapsApiTest\MapsApiTest.csproj", "{AE926B9A-3879-4FF4-B61F-E3E979264B14}"
 EndProject

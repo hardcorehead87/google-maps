@@ -1,0 +1,9 @@
+namespace GoogleMapsApi.Core.StaticMaps.Enums
+{
+	public enum MapVisibility
+	{
+		On,
+		Off,
+		Simplified
+	}
+}

@@ -1,6 +1,7 @@
-﻿using GoogleMapsApi.Entities.Common;
-using GoogleMapsApi.Entities.TimeZone.Request;
-using GoogleMapsApi.Entities.TimeZone.Response;
+﻿using GoogleMapsApi.Core;
+using GoogleMapsApi.Core.Entities.Common;
+using GoogleMapsApi.Core.Entities.TimeZone.Request;
+using GoogleMapsApi.Core.Entities.TimeZone.Response;
 using Xunit;
 
 namespace GoogleMapsApi.Test.IntegrationTests
