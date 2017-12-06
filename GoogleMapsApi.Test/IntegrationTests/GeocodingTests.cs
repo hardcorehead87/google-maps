@@ -32,7 +32,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 Address = "285 Bedford Ave, Brooklyn, NY 11211, USA"
             };
 
-            var result = GoogleMaps.Geocode.Query(request);
+            var result = GoogleMaps.Geocode.QueryAsync(request).Result;
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -61,7 +61,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
         {
             var request = new GeocodingRequest { Address = "285 Bedford Ave, Brooklyn, NY 11211, USA", ClientID = "gme-ThisIsAUnitTest", SigningKey = "AAECAwQFBgcICQoLDA0ODxAREhM=" };
 
-            Assert.Throws<AuthenticationException>(() => GoogleMaps.Geocode.Query(request));
+            Assert.Throws<AuthenticationException>(() => GoogleMaps.Geocode.QueryAsync(request).Result);
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
         {
             var request = new GeocodingRequest { Location = new Location(40.7141289, -73.9614074) };
 
-            var result = GoogleMaps.Geocode.Query(request);
+            var result = GoogleMaps.Geocode.QueryAsync(request).Result;
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using GoogleMapsApi;
 using GoogleMapsApi.Core;
 using GoogleMapsApi.Core.Entities.Common;
 using GoogleMapsApi.Core.Entities.Directions.Request;
@@ -27,7 +26,7 @@ namespace MapsApiTest
 				Destination = "Philladephia, Chesnut and Wallnut"
 			};
 
-			DirectionsResponse drivingDirections = GoogleMaps.Directions.Query(drivingDirectionRequest);
+			DirectionsResponse drivingDirections = GoogleMaps.Directions.QueryAsync(drivingDirectionRequest).Result;
 			PrintDirections(drivingDirections);
 
 			// Transit directions
@@ -39,7 +38,7 @@ namespace MapsApiTest
 				DepartureTime = DateTime.Now
 			};
 
-			DirectionsResponse transitDirections = GoogleMaps.Directions.Query(transitDirectionRequest);
+			DirectionsResponse transitDirections = GoogleMaps.Directions.QueryAsync(transitDirectionRequest).Result;
 			PrintDirections(transitDirections);
 
 
@@ -56,7 +55,7 @@ namespace MapsApiTest
                 Language = "sv"
             };
 
-            DirectionsResponse result = GoogleMaps.Directions.Query(request);
+            DirectionsResponse result = GoogleMaps.Directions.QueryAsync(request).Result;
             PrintDirections(result);
 
             // Geocode
@@ -73,7 +72,7 @@ namespace MapsApiTest
                 
 			};
 
-			GeocodingResponse geocode = GoogleMaps.Geocode.Query(geocodeRequest);
+			GeocodingResponse geocode = GoogleMaps.Geocode.QueryAsync(geocodeRequest).Result;
 			Console.WriteLine(geocode);
 
 			// Static maps API - get static map of with the path of the directions request

@@ -306,8 +306,6 @@ namespace GoogleMapsApi.Core.StaticMaps
 				}
 			}
 
-			parametersList.Add("sensor", request.Sensor ? "true" : "false");
-
 			return scheme + BaseUrl + "?" + parametersList.GetQueryStringPostfix();
 		}
 	}

@@ -32,7 +32,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 Sensor = false,
             };
 
-            PlacesResponse result = GoogleMaps.Places.Query(request);
+            PlacesResponse result = GoogleMaps.Places.QueryAsync(request).Result;
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -52,7 +52,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 Type = "airport",
             };
 
-            PlacesResponse result = GoogleMaps.Places.Query(request);
+            PlacesResponse result = GoogleMaps.Places.QueryAsync(request).Result;
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -74,7 +74,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 Sensor = false,
             };
 
-            PlacesResponse result = GoogleMaps.Places.Query(request);
+            PlacesResponse result = GoogleMaps.Places.QueryAsync(request).Result;
 
             if (result.Status == Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -98,7 +98,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 Sensor = false,
                 PageToken = result.NextPage
             };
-            result = GoogleMaps.Places.Query(request);
+            result = GoogleMaps.Places.QueryAsync(request).Result;
             Assert.Equal(Status.OK, result.Status);
             //make sure the second page has some results
             Assert.True(result.Results != null && result.Results.Any());

@@ -1,16 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <Product>Google Maps Web Services API wrapper for .NET</Product>
-    <Description>This library wraps Google maps API.
-You can easily query Google maps for Geocoding, Directions, Elevation, and Places.
-You can easily show the results on a Static Google Map!
-This Library is well documented and easy to use.</Description>
+    <Description>
+      This library wraps Google maps API.
+      You can easily query Google maps for Geocoding, Directions, Elevation, and Places.
+      You can easily show the results on a Static Google Map!
+      This Library is well documented and easy to use.
+    </Description>
     <PackageProjectUrl>https://github.com/maximn/google-maps/</PackageProjectUrl>
     <Company></Company>
     <Authors>Maxim Novak</Authors>
-    <Version>1.0.1.0</Version>
+    <Version>1.0.2.0</Version>
     <RepositoryUrl></RepositoryUrl>
     <PackageLicenseUrl>https://github.com/maximn/google-maps/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageIconUrl>https://code.google.com/p/google-maps/logo?cct=1335784301</PackageIconUrl>
@@ -19,10 +21,15 @@ This Library is well documented and easy to use.</Description>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="newtonsoft.json" Version="10.0.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.1" />
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

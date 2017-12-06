@@ -25,7 +25,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
         {
             var request = new DirectionsRequest { Origin = "285 Bedford Ave, Brooklyn, NY, USA", Destination = "185 Broadway Ave, Manhattan, NY, USA" };
 
-            var result = GoogleMaps.Directions.Query(request);
+            var result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -42,7 +42,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
 				Origin = "285 Bedford Ave, Brooklyn, NY, USA",
 				Destination = "185 Broadway Ave, Manhattan, NY, USA"
 			};
-			var result = GoogleMaps.Directions.Query(request);
+			var result = GoogleMaps.Directions.QueryAsync(request).Result;
 			if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
 				Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
 			Assert.Equal(DirectionsStatusCodes.REQUEST_DENIED, result.Status);
@@ -55,7 +55,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
         {
             var request = new DirectionsRequest { Origin = "NYC, USA", Destination = "Miami, USA", Waypoints = new string[] { "Philadelphia, USA" }, OptimizeWaypoints = true };
 
-            var result = GoogleMaps.Directions.Query(request);
+            var result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -72,7 +72,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
             request.Destination = "maleva 10, Ahtme, Kohtla-Järve, 31025 Ida-Viru County, Estonia";
             request.Origin = "veski 2, Jõhvi Parish, 41532 Ida-Viru County, Estonia";
 
-            DirectionsResponse result = GoogleMaps.Directions.Query(request);
+            DirectionsResponse result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             OverviewPolyline overviewPath = result.Routes.First().OverviewPath;
 
@@ -109,7 +109,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 TravelMode = TravelMode.Driving
             };
 
-            DirectionsResponse result = GoogleMaps.Directions.Query(request);
+            DirectionsResponse result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             var route = result.Routes.First();
             var leg = route.Legs.First();
@@ -128,7 +128,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 TravelMode = TravelMode.Driving
             };
 
-            DirectionsResponse result = GoogleMaps.Directions.Query(request);
+            DirectionsResponse result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             var route = result.Routes.First();
 
@@ -159,7 +159,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
 
             };
 
-            DirectionsResponse result = GoogleMaps.Directions.Query(request);
+            DirectionsResponse result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             var route = result.Routes.First();
             var leg = route.Legs.First();
@@ -188,7 +188,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 Region = "nz"
             };
 
-            DirectionsResponse result = GoogleMaps.Directions.Query(request);
+            DirectionsResponse result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             Assert.NotEmpty(result.Routes);
             Assert.True(result.Status.Equals(DirectionsStatusCodes.OK));
@@ -204,7 +204,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 DepartureTime = DateTime.Now.Date.AddDays(1).AddHours(8),
                 ApiKey = _fixture.ApiKey //Duration in traffic requires an API key
             };
-            var result = GoogleMaps.Directions.Query(request);
+            var result = GoogleMaps.Directions.QueryAsync(request).Result;
 
             if (result.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -233,11 +233,11 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 TrafficModel = TrafficModel.Pessimistic,
                 ApiKey = _fixture.ApiKey //Traffic model requires an API key
             };
-            var resultPessimistic = GoogleMaps.Directions.Query(request);
+            var resultPessimistic = GoogleMaps.Directions.QueryAsync(request).Result;
             request.TrafficModel = TrafficModel.Optimistic;
-            var resultOptimistic = GoogleMaps.Directions.Query(request);
+            var resultOptimistic = GoogleMaps.Directions.QueryAsync(request).Result;
             request.TrafficModel = TrafficModel.Best_guess;
-            var resultBest_guess = GoogleMaps.Directions.Query(request);
+            var resultBest_guess = GoogleMaps.Directions.QueryAsync(request).Result;
 
             if (resultPessimistic.Status == DirectionsStatusCodes.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using GoogleMapsApi.Core.Entities.Directions.Response;
 
 namespace GoogleMapsApi.Core.Entities.DistanceMatrix.Response
 {
@@ -16,14 +15,14 @@ namespace GoogleMapsApi.Core.Entities.DistanceMatrix.Response
             }
             set
             {
-                Status = (DirectionsStatusCodes)Enum.Parse(typeof(DirectionsStatusCodes), value);
+                Status = (DistanceMatrixElementStatusCodes)Enum.Parse(typeof(DistanceMatrixElementStatusCodes), value);
             }
         }
 
         /// <summary>
         /// "status" See Status Codes for a list of possible status codes.
         /// </summary>
-        public DirectionsStatusCodes Status { get; set; }
+        public DistanceMatrixElementStatusCodes Status { get; set; }
 
         /// <summary>
 		///  distance: The total distance of this route, expressed in meters (value) and as text

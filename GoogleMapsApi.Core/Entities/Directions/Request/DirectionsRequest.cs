@@ -95,7 +95,7 @@ namespace GoogleMapsApi.Core.Entities.Directions.Request
         /// </summary>
         public TrafficModel TrafficModel { get; set; }
 
-        protected override QueryStringParametersList GetQueryStringParameters()
+		protected override QueryStringParametersList GetQueryStringParameters()
 		{
 			if (string.IsNullOrWhiteSpace(Origin))
 				throw new ArgumentException("Must specify an Origin");
@@ -112,7 +112,7 @@ namespace GoogleMapsApi.Core.Entities.Directions.Request
 		    if (TrafficModel != TrafficModel.None && (DepartureTime == default(DateTime) && ArrivalTime == default(DateTime)))
 		        throw new ArgumentException("You must set either DepatureTime or ArrivalTime when Traffic Model != None");
 
-            var parameters = base.GetQueryStringParameters();
+			var parameters = base.GetQueryStringParameters();
 			parameters.Add("origin", Origin);
 			parameters.Add("destination", Destination);
 			parameters.Add("mode", TravelMode.ToString().ToLower());
@@ -156,7 +156,7 @@ namespace GoogleMapsApi.Core.Entities.Directions.Request
             if(TrafficModel != TrafficModel.None)
                 parameters.Add("traffic_model", TrafficModel.ToString().ToLower());
 
-            return parameters;
+			return parameters;
 		}
 	}
 }

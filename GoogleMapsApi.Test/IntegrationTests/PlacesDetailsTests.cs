@@ -32,7 +32,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                     Location = new Location(-31.954453, 115.862717),
                     RankBy = RankBy.Distance,
                 };
-                var result = GoogleMaps.Places.Query(request);
+                var result = GoogleMaps.Places.QueryAsync(request).Result;
                 if (result.Status == Status.OVER_QUERY_LIMIT)
                     Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
                 _cachedMyPlaceId = result.Results.First().PlaceId;
@@ -49,7 +49,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 PlaceId = "ChIJZ3VuVMQdLz4REP9PWpQ4SIY"
             };
 
-            PlacesDetailsResponse result = GoogleMaps.PlacesDetails.Query(request);
+            PlacesDetailsResponse result = GoogleMaps.PlacesDetails.QueryAsync(request).Result;
 
             if (result.Status == Core.Entities.PlacesDetails.Response.Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -67,7 +67,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 PlaceId = "ChIJbWWgrQAVkFQReAwrXXWzlYs"
             };
 
-            PlacesDetailsResponse result = GoogleMaps.PlacesDetails.Query(request);
+            PlacesDetailsResponse result = GoogleMaps.PlacesDetails.QueryAsync(request).Result;
 
             if (result.Status == Core.Entities.PlacesDetails.Response.Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -85,7 +85,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 PlaceId = GetMyPlaceId(),
             };
 
-            PlacesDetailsResponse result = GoogleMaps.PlacesDetails.Query(request);
+            PlacesDetailsResponse result = GoogleMaps.PlacesDetails.QueryAsync(request).Result;
 
             if (result.Status == Core.Entities.PlacesDetails.Response.Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
@@ -102,7 +102,7 @@ namespace GoogleMapsApi.Test.IntegrationTests
                 PlaceId = GetMyPlaceId(),
             };
 
-            PlacesDetailsResponse result = GoogleMaps.PlacesDetails.Query(request);
+            PlacesDetailsResponse result = GoogleMaps.PlacesDetails.QueryAsync(request).Result;
 
             if (result.Status == Core.Entities.PlacesDetails.Response.Status.OVER_QUERY_LIMIT)
                 Assert.True(false, "Cannot run test since you have exceeded your Google API query limit.");
