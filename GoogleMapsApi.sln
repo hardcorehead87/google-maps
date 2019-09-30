@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMapsApi.Core", "GoogleMapsApi.Core\GoogleMapsApi.Core.csproj", "{2365CD10-AD61-4822-BFE6-3D94D52CFBCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleMapsApi.Core", "GoogleMapsApi.Core\GoogleMapsApi.Core.csproj", "{2365CD10-AD61-4822-BFE6-3D94D52CFBCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapsApiTest", "MapsApiTest\MapsApiTest.csproj", "{AE926B9A-3879-4FF4-B61F-E3E979264B14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapsApiTest", "MapsApiTest\MapsApiTest.csproj", "{AE926B9A-3879-4FF4-B61F-E3E979264B14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMapsApi.Test", "GoogleMapsApi.Test\GoogleMapsApi.Test.csproj", "{F674FE77-F30D-4893-80F6-672229ED47E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleMapsApi.Test", "GoogleMapsApi.Test\GoogleMapsApi.Test.csproj", "{F674FE77-F30D-4893-80F6-672229ED47E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,5 +58,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {078523DC-CC98-4A1D-9C79-25E090A5E885}
 	EndGlobalSection
 EndGlobal

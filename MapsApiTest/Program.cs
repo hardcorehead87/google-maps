@@ -15,31 +15,38 @@ using GoogleMapsApi.Core.StaticMaps.Entities;
 
 namespace MapsApiTest
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			// Driving directions
-			var drivingDirectionRequest = new DirectionsRequest
-			{
-				Origin = "NYC, 5th and 39",
-				Destination = "Philladephia, Chesnut and Wallnut"
-			};
+    class Program
+    {
+        private const string ApiKey = "";
 
-			DirectionsResponse drivingDirections = GoogleMaps.Directions.QueryAsync(drivingDirectionRequest).Result;
-			PrintDirections(drivingDirections);
+        private static void Main(string[] args)
+        {
+            GoogleMaps.SetRateLimit(50, TimeSpan.FromSeconds(1));
+            var start = DateTime.Now;
 
-			// Transit directions
-			var transitDirectionRequest = new DirectionsRequest
-			{
-				Origin = "New York",
-				Destination = "Queens",
-				TravelMode = TravelMode.Transit,
-				DepartureTime = DateTime.Now
-			};
+            // Driving directions
+            var drivingDirectionRequest = new DirectionsRequest
+            {
+                Origin = "NYC, 5th and 39",
+                Destination = "Philladephia, Chesnut and Wallnut",
+                ApiKey = ApiKey
+            };
 
-			DirectionsResponse transitDirections = GoogleMaps.Directions.QueryAsync(transitDirectionRequest).Result;
-			PrintDirections(transitDirections);
+            DirectionsResponse drivingDirections = GoogleMaps.Directions.QueryAsync(drivingDirectionRequest).Result;
+            PrintDirections(drivingDirections);
+
+            // Transit directions
+            var transitDirectionRequest = new DirectionsRequest
+            {
+                Origin = "New York",
+                Destination = "Queens",
+                TravelMode = TravelMode.Transit,
+                DepartureTime = DateTime.Now,
+                ApiKey = ApiKey
+            };
+
+            DirectionsResponse transitDirections = GoogleMaps.Directions.QueryAsync(transitDirectionRequest).Result;
+            PrintDirections(transitDirections);
 
 
             var dep_time = DateTime.Today
@@ -52,7 +59,8 @@ namespace MapsApiTest
                 Destination = "Kungsträdgården, Stockholm, Sverige",
                 TravelMode = TravelMode.Transit,
                 DepartureTime = dep_time,
-                Language = "sv"
+                Language = "sv",
+                ApiKey = ApiKey
             };
 
             DirectionsResponse result = GoogleMaps.Directions.QueryAsync(request).Result;
@@ -61,86 +69,87 @@ namespace MapsApiTest
             // Geocode
             //https://maps.googleapis.com/maps/api/geocode/json?address=Parque+Marechal+Mascarenhas+de+Morais&components=locality:Porto%20Aelgre|administrative_area:RS|country:BR
             var geocodeRequest = new GeocodingRequest
-			{
-				Address = "Parque Marechal Mascarenhas de Morais",
+            {
+                Address = "Parque Marechal Mascarenhas de Morais",
                 Components = new GeocodingComponents()
                 {
                     Locality = "Porto Alegre",
                     AdministrativeArea = "RS",
                     Country = "BR"
-                }
-                
-			};
+                },
+                ApiKey = ApiKey
+            };
 
-			GeocodingResponse geocode = GoogleMaps.Geocode.QueryAsync(geocodeRequest).Result;
-			Console.WriteLine(geocode);
+            GeocodingResponse geocode = GoogleMaps.Geocode.QueryAsync(geocodeRequest).Result;
+            Console.WriteLine(geocode);
 
-			// Static maps API - get static map of with the path of the directions request
-			var staticMapGenerator = new StaticMapsEngine();
+            // Static maps API - get static map of with the path of the directions request
+            var staticMapGenerator = new StaticMapsEngine();
 
-			//Path from previous directions request
-			IEnumerable<Step> steps = drivingDirections.Routes.First().Legs.First().Steps;
-			// All start locations
-			IList<ILocationString> path = steps.Select(step => step.StartLocation).ToList<ILocationString>();
-			// also the end location of the last step
-			path.Add(steps.Last().EndLocation);
+            //Path from previous directions request
+            IEnumerable<Step> steps = drivingDirections.Routes.First().Legs.First().Steps;
+            // All start locations
+            IList<ILocationString> path = steps.Select(step => step.StartLocation).ToList<ILocationString>();
+            // also the end location of the last step
+            path.Add(steps.Last().EndLocation);
 
-			string url = staticMapGenerator.GenerateStaticMapURL(new StaticMapRequest(new Location(40.38742, -74.55366), 9, new ImageSize(800, 400))
-			{
-				Pathes = new List<Path> { new Path
-					{
-						Style = new PathStyle
-						{
-							Color = "red"
-						},
-						Locations = path
-					}},
-                ApiKey = string.Empty //Pass the API Key here. if it is passed as non empty value, then it will be appended in request URL
-			});
+            string url = staticMapGenerator.GenerateStaticMapURL(new StaticMapRequest(new Location(40.38742, -74.55366), 9, new ImageSize(800, 400))
+            {
+                Pathes = new List<Path> { new Path
+                    {
+                        Style = new PathStyle
+                        {
+                            Color = "red"
+                        },
+                        Locations = path
+                    }},
+                ApiKey = ApiKey
+            });
 
-			Console.WriteLine("Map with path: " + url);
+            Console.WriteLine("Map with path: " + url);
 
-			// Async! (Elevation)
-			var elevationRequest = new ElevationRequest
-			{
-				Locations = new[] { new Location(54, 78) },
-			};
+            // Async! (Elevation)
+            var elevationRequest = new ElevationRequest
+            {
+                Locations = new[] { new Location(54, 78) },
+                ApiKey = ApiKey
+            };
 
-			var task = GoogleMaps.Elevation.QueryAsync(elevationRequest)
-				.ContinueWith(t => Console.WriteLine("\n" + t.Result));
+            var task = GoogleMaps.Elevation.QueryAsync(elevationRequest)
+                .ContinueWith(t => Console.WriteLine("\n" + t.Result));
 
-			Console.Write("Asynchronous query sent, waiting for a reply..");
+            Console.Write("Asynchronous query sent, waiting for a reply..");
 
-			while (!task.IsCompleted)
-			{
-				Console.Write('.');
-				Thread.Sleep(1000);
-			}
+            while (!task.IsCompleted)
+            {
+                Console.Write('.');
+                Thread.Sleep(1000);
+            }
 
-            Console.WriteLine("Finished! Press any key to exit...");
-			Console.ReadKey();
-		}
+            Console.WriteLine($"Finished! ({DateTime.Now - start:g}) Press any key to exit...");
+            Console.ReadKey();
+        }
 
-		private static void PrintDirections(DirectionsResponse directions)
-		{
-			Route route = directions.Routes.First();
-			Leg leg = route.Legs.First();
+        private static void PrintDirections(DirectionsResponse directions)
+        {
+            Route route = directions.Routes.First();
+            Leg leg = route.Legs.First();
 
-			foreach (Step step in leg.Steps)
-			{
-				Console.WriteLine(StripHTML(step.HtmlInstructions));
+            foreach (Step step in leg.Steps)
+            {
+                Console.WriteLine(StripHTML(step.HtmlInstructions));
 
                 var localIcon = step.TransitDetails?.Lines?.Vehicle?.LocalIcon;
                 if (localIcon != null)
                     Console.WriteLine("Local sign: " + localIcon);
-			}
+            }
 
-			Console.WriteLine();
-		}
+            Console.WriteLine();
+        }
 
-		private static string StripHTML(string html)
-		{
-			return Regex.Replace(html, @"<(.|\n)*?>", string.Empty);
-		}
-	}
+        private static string StripHTML(string html)
+        {
+            return Regex.Replace(html, @"<(.|\n)*?>", string.Empty);
+        }
+    }
 }

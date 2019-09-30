@@ -1,4 +1,7 @@
-﻿using GoogleMapsApi.Core.Entities.Directions.Request;
+﻿using System;
+using System.Net.Http;
+using GoogleMapsApi.Core.Engine;
+using GoogleMapsApi.Core.Entities.Directions.Request;
 using GoogleMapsApi.Core.Entities.Directions.Response;
 using GoogleMapsApi.Core.Entities.DistanceMatrix.Request;
 using GoogleMapsApi.Core.Entities.DistanceMatrix.Response;
@@ -24,40 +27,60 @@ using GoogleMapsApi.Core.Entities.TimeZone.Response;
 namespace GoogleMapsApi.Core
 {
     public class GoogleMaps
-	{
-		/// <summary>Perform geocoding operations.</summary>
-		public static IEngineFacade<GeocodingRequest, GeocodingResponse> Geocode
-		{
-			get
-			{
-				return EngineFacade<GeocodingRequest, GeocodingResponse>.Instance;
-			}
-		}
-		/// <summary>Perform directions operations.</summary>
-		public static IEngineFacade<DirectionsRequest, DirectionsResponse> Directions
-		{
-			get
-			{
-				return EngineFacade<DirectionsRequest, DirectionsResponse>.Instance;
-			}
-		}
-		/// <summary>Perform elevation operations.</summary>
-		public static IEngineFacade<ElevationRequest, ElevationResponse> Elevation
-		{
-			get
-			{
-				return EngineFacade<ElevationRequest, ElevationResponse>.Instance;
-			}
-		}
+    {
+        private static HttpClient _httpClient;
+        private static DelegatingHandler _rateLimiter;
 
-		/// <summary>Perform places operations.</summary>
-		public static IEngineFacade<PlacesRequest, PlacesResponse> Places
-		{
-			get
-			{
-				return EngineFacade<PlacesRequest, PlacesResponse>.Instance;
-			}
-		}
+        internal static HttpClient HttpClient
+        {
+            get
+            {
+                if (_httpClient != null)
+                    return _httpClient;
+
+                _httpClient = _rateLimiter != null ? new HttpClient(_rateLimiter) : new HttpClient();
+                return _httpClient;
+            }
+        }
+
+        public static void SetRateLimit(int limitCount, TimeSpan limitTime)
+        {
+            _rateLimiter = new RateLimitMessageHandler(limitCount, limitTime);
+        }
+
+        /// <summary>Perform geocoding operations.</summary>
+        public static IEngineFacade<GeocodingRequest, GeocodingResponse> Geocode
+        {
+            get
+            {
+                return EngineFacade<GeocodingRequest, GeocodingResponse>.Instance;
+            }
+        }
+        /// <summary>Perform directions operations.</summary>
+        public static IEngineFacade<DirectionsRequest, DirectionsResponse> Directions
+        {
+            get
+            {
+                return EngineFacade<DirectionsRequest, DirectionsResponse>.Instance;
+            }
+        }
+        /// <summary>Perform elevation operations.</summary>
+        public static IEngineFacade<ElevationRequest, ElevationResponse> Elevation
+        {
+            get
+            {
+                return EngineFacade<ElevationRequest, ElevationResponse>.Instance;
+            }
+        }
+
+        /// <summary>Perform places operations.</summary>
+        public static IEngineFacade<PlacesRequest, PlacesResponse> Places
+        {
+            get
+            {
+                return EngineFacade<PlacesRequest, PlacesResponse>.Instance;
+            }
+        }
 
         /// <summary>Perform places text search operations.</summary>
         public static IEngineFacade<PlacesTextRequest, PlacesTextResponse> PlacesText
@@ -120,6 +143,5 @@ namespace GoogleMapsApi.Core
                 return EngineFacade<DistanceMatrixRequest, DistanceMatrixResponse>.Instance;
             }
         }
-
     }
 }
